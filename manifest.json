@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Ethical Article Access",
+  "name": "Article Reader",
   "version": "1.0",
   "description": "Access paywalled content through legal methods",
   "permissions": [

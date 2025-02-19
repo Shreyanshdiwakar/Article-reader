@@ -1,7 +1,5 @@
-// Store tab settings
 let tabSettings = new Map();
 
-// Listen for messages from content script and popup
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.action === 'checkArchive') {
         handleArchiveCheck(message.url);
@@ -9,7 +7,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     return true;
 });
 
-// Handle Archive.org check
 async function handleArchiveCheck(url) {
     try {
         const response = await fetch(url);
@@ -21,12 +18,10 @@ async function handleArchiveCheck(url) {
     }
 }
 
-// Clean up tab settings when tab is closed
 chrome.tabs.onRemoved.addListener((tabId) => {
     tabSettings.delete(tabId);
 });
 
-// Initialize extension
 chrome.runtime.onInstalled.addListener(() => {
     console.log('Paywall extension installed successfully');
-}); 
+});

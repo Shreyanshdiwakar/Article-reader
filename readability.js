@@ -22,10 +22,7 @@ function Readability(doc, options) {
     this._doc = doc;
     
     this.parse = function() {
-        // Get the main content
         let article = this._getArticleContent();
-        
-        // Get the title
         let title = this._getArticleTitle();
         
         return {
@@ -39,20 +36,17 @@ function Readability(doc, options) {
     };
     
     this._getArticleContent = function() {
-        // Create container for article
         let article = this._doc.createElement('div');
         
-        // Try to find main content containers first
         let mainContent = this._doc.querySelector('main, [role="main"], article, .article, .post, .content');
         if (mainContent) {
             article.innerHTML = mainContent.innerHTML;
             return this._cleanupContent(article);
         }
         
-        // If no main content found, look for article-like content
         let possibleContent = this._doc.querySelectorAll('p, .post-content, article, [itemprop="articleBody"]');
         for (let element of possibleContent) {
-            if (element.textContent.length > 150) { // Arbitrary length to filter out short snippets
+            if (element.textContent.length > 150) {
                 article.appendChild(element.cloneNode(true));
             }
         }
@@ -61,7 +55,6 @@ function Readability(doc, options) {
     };
     
     this._getArticleTitle = function() {
-        // Try to find the article title
         let titleElement = this._doc.querySelector('h1, .article-title, .post-title');
         if (titleElement) {
             return titleElement.textContent.trim();
@@ -70,7 +63,6 @@ function Readability(doc, options) {
     };
     
     this._getByline = function() {
-        // Try to find author information
         let bylineElement = this._doc.querySelector('.byline, .author, [rel="author"]');
         return bylineElement ? bylineElement.textContent.trim() : '';
     };
@@ -81,22 +73,18 @@ function Readability(doc, options) {
     };
     
     this._cleanupContent = function(container) {
-        // Remove unwanted elements
         let unwanted = container.querySelectorAll(
             'script, style, link, nav, header, footer, .ad, .advertisement, .social-share, .comments'
         );
         unwanted.forEach(elem => elem.remove());
         
-        // Clean up remaining content
         let elements = container.getElementsByTagName('*');
         for (let element of elements) {
-            // Remove empty elements
             if (!element.textContent.trim() && !element.querySelector('img')) {
                 element.remove();
                 continue;
             }
             
-            // Remove most attributes except for essential ones
             let attributes = element.attributes;
             for (let i = attributes.length - 1; i >= 0; i--) {
                 let attr = attributes[i];
