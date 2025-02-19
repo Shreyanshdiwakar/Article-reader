@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "Ethical Article Access",
+  "version": "1.0",
+  "description": "Access paywalled content through legal methods",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "tabs"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [{
+    "matches": ["<all_urls>"],
+    "js": [
+      "readability.js",
+      "content.js"
+    ],
+    "run_at": "document_idle"
+  }]
+} 
